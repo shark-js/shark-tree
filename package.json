@@ -1,0 +1,19 @@
+{
+  "name": "shark-tree",
+  "version": "0.0.1",
+  "description": "shark-tree ==========",
+  "main": "lib/tree.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shark-js/shark-tree.git"
+  },
+  "author": "Vadim Goncharov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shark-js/shark-tree/issues"
+  },
+  "homepage": "https://github.com/shark-js/shark-tree"
+}
