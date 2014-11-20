@@ -4,7 +4,7 @@
   "description": "shark-tree ==========",
   "main": "lib/tree.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/.bin/mocha --harmony ./test"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,17 @@
   "bugs": {
     "url": "https://github.com/shark-js/shark-tree/issues"
   },
-  "homepage": "https://github.com/shark-js/shark-tree"
+  "homepage": "https://github.com/shark-js/shark-tree",
+  "engines": {
+    "node": ">=0.11.14 <0.12",
+    "npm": ">=2.1.5"
+  },
+  "engineStrict": true,
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "mocha": "^2.0.1"
+  },
+  "dependencies": {
+    "verror": "^1.5.1"
+  }
 }
