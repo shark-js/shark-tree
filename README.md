@@ -2,24 +2,28 @@ SharkTree API
 ==========
 ## SharkTree
 
-#### void forEach(function callback)
-###### callback(string destPath, SharkSrcFile srcFile)
-
+#### void forEachDestSeries(function callback)
+###### callback(string destPath, SharkTreeSrcCollection srcCollection, function doneCallback)
 #### boolean hasDest(string destPath)
-#### SharkSrcFiles getSrcFilesByDest(string destPath)
+#### SharkTreeSrcCollection getSrcCollectionByDest(string destPath)
 
 
-## SharkSrcFiles
-#### void forEach(function callback)
-###### void callback(SharkSrcFile srcFile, number index)
-#### SharkSrcFile srcFile(number index)
-#### object options
-#### string filesContent
-#### boolean hasFilesContent
-#### number srcFilesCount
-#### SharkSrcFile firstSrcFile
+## SharkTreeSrcCollection
+#### void forEachSeries(function callback)
+###### void callback(SharkTreeSrcFile srcFile, number index, function doneCallback)
+#### SharkTreeSrcFile getFileByIndex(number index)
+#### object getOptions
+#### string getContent
+#### void setContent(string content)
+#### boolean wasContentFilled
+#### number getCount
+#### SharkTreeSrcFile getFirstFile
+#### void fillContent
 
-## SharkSrcFile
-#### string src(string value)
-#### string content(string value)
-#### boolean isInFilesContent
+## SharkTreeSrcFile
+#### string getSrc(string value)
+#### string setSrc(string value)
+#### string getContent(string content)
+#### string setContent(string content)
+#### boolean wasContentFilled
+#### void fillContent
