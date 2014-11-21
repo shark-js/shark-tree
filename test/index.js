@@ -7,6 +7,7 @@ const Tree              = require('../lib/tree');
 const SrcCollection     = require('../lib/src-collection');
 const Logger            = require('shark-logger');
 const path              = require('path');
+const cofse             = require('co-fs-extra');
 
 describe('Initialization',function(){
 	before(function() {
@@ -157,8 +158,92 @@ describe('Fill content', function() {
 		var srcCollection = this.tree.getSrcCollectionByDest('dest/path');
 		yield srcCollection.fillContent();
 
+		expect(srcCollection.getCount()).equal(3);
+
 		expect(srcCollection.getFileByIndex(0).getContent()).equal('hello');
 		expect(srcCollection.getFileByIndex(1).getContent()).equal('world');
 		expect(srcCollection.getFileByIndex(2).getContent()).equal('lorem ipsum');
+	});
+
+	it('should fill content from *.txt files and transform to oneToOne', function *() {
+		this.tree = Tree({
+			'dest/path': {
+				files: [
+					path.join(__dirname, './fixtures/1.txt'),
+					path.join(__dirname, './fixtures/2.txt'),
+					path.join(__dirname, './fixtures/3.txt'),
+				],
+				options: {}
+			}
+		}, this.logger);
+
+
+		var srcCollection = this.tree.getSrcCollectionByDest('dest/path');
+		yield srcCollection.fillContent();
+		expect(srcCollection.getCount()).equal(3);
+
+		srcCollection.transformToOneToOne();
+		expect(srcCollection.getCount()).equal(1);
+
+		expect(srcCollection.getFirstFile().getContent()).equal('helloworldlorem ipsum');
+		expect(srcCollection.getFirstFile().getSrc()).to.be.null();
+	});
+});
+
+describe('write content', function() {
+	before(function *() {
+		this.logger = Logger({
+			name: 'SharkTreeLogger'
+		});
+
+		this.destPathA = path.join(__dirname, './fixtures/dest-a.txt');
+		this.destPathB = path.join(__dirname, './fixtures/dest-b.txt');
+
+		var files = {};
+		files[this.destPathA] = {
+			files: [
+				path.join(__dirname, './fixtures/1.txt'),
+				path.join(__dirname, './fixtures/2.txt'),
+				path.join(__dirname, './fixtures/3.txt'),
+			],
+			options: {}
+		};
+		files[this.destPathB] = {
+			files: [
+				path.join(__dirname, './fixtures/2.txt'),
+				path.join(__dirname, './fixtures/3.txt'),
+			],
+			options: {}
+		};
+
+		this.tree = Tree(files, this.logger);
+
+		yield cofse.writeFile(this.destPathA, '');
+		yield cofse.writeFile(this.destPathB, '');
+	});
+
+	it('should fill content from *.txt files and write it on the disk', function *() {
+		yield this.tree.fillContent();
+
+		var collectionA = this.tree.getSrcCollectionByDest(this.destPathA);
+		var collectionB = this.tree.getSrcCollectionByDest(this.destPathB);
+
+		expect(collectionA.getCount()).equal(3);
+		expect(collectionB.getCount()).equal(2);
+
+		expect(collectionA.getFileByIndex(0).getContent()).equal('hello');
+		expect(collectionA.getFileByIndex(1).getContent()).equal('world');
+		expect(collectionA.getFileByIndex(2).getContent()).equal('lorem ipsum');
+
+		expect(collectionB.getFileByIndex(0).getContent()).equal('world');
+		expect(collectionB.getFileByIndex(1).getContent()).equal('lorem ipsum');
+
+		yield this.tree.writeContentToFiles();
+
+		var contentDestPathA = yield cofse.readFile(this.destPathA, {encoding: 'utf8'});
+		var contentDestPathB = yield cofse.readFile(this.destPathB, {encoding: 'utf8'});
+
+		expect(contentDestPathA).equal('helloworldlorem ipsum');
+		expect(contentDestPathB).equal('worldlorem ipsum');
 	});
 });
