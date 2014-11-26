@@ -68,4 +68,18 @@ describe('Initialization',function(){
 		expect(tree.getSrcCollectionByDest(dest).getCount()).equal(1);
 	});
 
+	it('should createTree from dest', function *() {
+		var dest1 = path.join(__dirname, './fixtures/dest-a.txt');
+		var dest2 = path.join(__dirname, './fixtures/dest-b.txt');
+		var src1 = path.join(__dirname, './fixtures/1.txt');
+		var src2 = path.join(__dirname, './fixtures/2.txt');
+		var files = {};
+		files[dest1] = [src1, src2];
+		files[dest2] = [src2];
+
+		var tree = yield Tree(files, this.logger);
+		var newTree = yield tree.createTreeFromDest(dest1);
+		expect(newTree.hasDest(dest1)).to.be.true;
+		expect(newTree.hasDest(dest2)).to.be.false;
+	});
 });
