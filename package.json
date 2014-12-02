@@ -1,6 +1,6 @@
 {
   "name": "shark-tree",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "shark-tree ==========",
   "main": "lib/tree.js",
   "scripts": {
