@@ -31,7 +31,7 @@
     "co-fs-extra": "git://github.com/shark-js/co-fs-extra",
     "expand": "git://github.com/shark-js/expand",
     "node.extend": "^1.1.3",
-    "shark-logger": "0.0.1",
+    "shark-logger": "*",
     "verror": "^1.5.1"
   }
 }
