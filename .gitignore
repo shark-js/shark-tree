@@ -29,3 +29,5 @@ node_modules
 
 ./test/fixtures/dest-a.txt
 ./test/fixtures/dest-b.txt
+
+.idea
